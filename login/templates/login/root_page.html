@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Index Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            margin: 0;
+            padding-top: 5px;
+            position: relative; /* Needed for absolute positioning of the profile container */
+        }
+        .logo {
+            margin-bottom: 20px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 20px;
+            width: 80%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+        .grid-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 200px;
+            height: 220px;
+            overflow: hidden;
+        }
+        .grid-item img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        /* Profile and Login Styles */
+        .profile-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f4f4f4;
+            text-align: center;
+            width: 120px;
+        }
+        .upload-btn-wrapper {
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.3s;
+            bottom: 50px;
+            left: 10px;
+        }
+
+        .profile-pic:hover .upload-btn-wrapper {
+            opacity: 1;
+        }
+
+        .btn {
+            border: none;
+            color: white;
+            background-color: #4CAF50;
+            padding: 4px 8px; /* Reduced padding */
+            border-radius: 5px;
+            font-size: 12px; /* Smaller font size */
+            cursor: pointer;
+            white-space: nowrap; /* Keep the text on a single line */
+        }
+
+        .btn:focus {
+            outline: none;
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            background-color: #aaa; /* Placeholder for profile picture */
+            margin: 0 auto; /* Center in the container */
+            border-radius: 50%; /* Optional: makes it round */
+            display: flex; /* Use flex to center contents */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+        .profile-pic img {
+            max-width: 100%; /* Ensure image fits in the circle */
+            max-height: 100%;
+            border-radius: 50%; /* Optional: makes it round */
+        }
+        .login-form {
+            display: none; /* Hide login form initially */
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        {% if user.is_authenticated %}
+            <div class="profile-pic">
+                {% if profile_pic_url %}
+                    <img src="{{ profile_pic_url }}" alt="Profile Picture">
+                {% else %}
+                    <!-- Placeholder if no profile picture is available -->
+                    <div style="background-color: #aaa; width: 100%; height: 100%;"></div>
+                {% endif %}
+                <!-- Upload Button and Form -->
+                <div class="upload-btn-wrapper">
+                    <form method="POST" action="{% url 'upload_profile_picture' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="file" name="profile_pic" id="profile_pic_input" style="display: none;" onchange="form.submit()">
+                        <label for="profile_pic_input" class="btn">Upload New Picture</label>
+                    </form>
+                </div>
+            </div>
+            <span>{{ full_name }}</span>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        {% else %}
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="text" name="username" placeholder="Username">
+                <input type="password" name="password" placeholder="Password">
+                <button type="submit">Login</button>
+            </form>
+        {% endif %}
+    </div>
+    <div class="logo">
+        <img src="/media/logo.png" alt="Company Logo">
+    </div>
+    <div class="grid-container">
+        <!-- Repeat this block for each window -->
+        <div class="grid-container">
+            <!-- Window 1 with clickable link -->
+            <a href="http://op.crystallagoons.info/" class="grid-item" style="text-decoration: none; color: inherit;">
+                <img src="/media/passport.png" alt="Window 1">
+                <span>Solicitudes de Viajes</span>
+            </a>
+            <a href="https://infocenter.crystallagoons.com/" class="grid-item" style="text-decoration: none; color: inherit;">
+                <img src="/media/infocenter.png" alt="Window 2">
+                <span>infocenter</span>
+            </a>
+            <a href="http://opvisitas.crystallagoons.info/" class="grid-item" style="text-decoration: none; color: inherit;">
+                <img src="/media/operaciones 2.png" alt="Window 3">
+                <span>Visitas de Operaciones</span>
+            </a>
+        <div class="grid-item">
+            <img src="/media/operaciones.png" alt="Window 4">
+            <span>Placeholder</span>
+        </div>
+        <div class="grid-item">
+            <img src="/media/logomalo.png" alt="Window 5">
+            <span>Placeholder</span>
+        </div>
+        <div class="grid-item">
+            <img src="/media/logomalo.png" alt="Window 6">
+            <span>Placeholder</span>
+        </div>
+        <div class="grid-item">
+            <img src="/media/logomalo.png" alt="Window 7">
+            <span>Placeholder</span>
+        </div>
+        <div class="grid-item">
+            <img src="/media/logomalo.png" alt="Window 8">
+            <span>Placeholder</span>
+        </div>
+        <div class="grid-item">
+            <img src="/media/logomalo.png" alt="Window 9">
+            <span>Placeholder</span>
+        </div>
+    </div>
+</body>
+</html>
